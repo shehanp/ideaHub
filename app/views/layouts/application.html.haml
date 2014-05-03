@@ -1,0 +1,87 @@
+/ !!!
+/ %html
+/   %head
+/     %title Ideas
+/     = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+/     = javascript_include_tag "application", "data-turbolinks-track", "answerkiller" => true
+/     = csrf_meta_tags
+/   %body
+/     .container
+/       .row.navbar.navbar-default.navbar-fixed-top
+/         .col-sm-1.col-sm-1
+/           %p.row= link_to "All Ideas", ideas_path
+/         .col-sm-1.col-sm-1
+/           %p.row= link_to "Create New Idea", new_idea_path
+/         %span.col-sm-6.navbar-brand Ideas
+/         .col-sm-6.pull-right
+/           .row
+/             - if user_signed_in?
+/               .custo.col-sm-6.col-sm-offset-6
+/                 Hello #{current_user.full_name}
+/               .col-sm-4
+/                 = link_to "Sign Out", destroy_user_session_path, method: :delete
+/             - else
+/               = link_to "Sign In", new_user_session_path
+/       - if flash[:notice] || flash[:alert] || flash[:error]
+/         %h3= flash[:notice] || flash[:alert]  || flash[:error]
+/       = yield
+!!!
+%html
+  %head
+    %title Ideas
+    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track", "answerkiller" => true
+    = csrf_meta_tags
+  %body
+    .navbar.navbar-default.navbar
+      .container
+        .navbar-header
+          %a.navbar-brand{href: "../"} 
+            .fa.fa-lightbulb-o.fa-lg  
+              ideaHub
+          %button.navbar-toggle{"data-target" => "#navbar-main", "data-toggle" => "collapse", type: "button"}
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+        #navbar-main.navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            %li.dropdown
+              %a#themes.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+                Ideas
+                %span.caret
+              %ul.dropdown-menu{"aria-labelledby" => "themes"}
+            %li
+              = form_tag ideas_path, method: :get do
+                %p
+                = text_field_tag :query, params[:query]
+                %a
+                  %i.fa.fa-search
+            %li
+              %a{href: "http://news.bootswatch.com"} Blog
+            %li.dropdown
+              %a#download.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+                Download
+                %span.caret
+              %ul.dropdown-menu{"aria-labelledby" => "download"}
+                %li
+                  %a{href: "./bootstrap.min.css"} bootstrap.min.css
+                %li
+                  %a{href: "./bootstrap.css"} bootstrap.css
+                %li.divider
+                %li
+                  %a{href: "./variables.less"} variables.less
+                %li
+                  %a{href: "./bootswatch.less"} bootswatch.less
+          %ul.nav.navbar-nav.navbar-right
+            %li{"aria-labelledby" => "download"}
+              - if user_signed_in?
+                Hello #{current_user.full_name}
+                %li
+                  = link_to "Sign Out", destroy_user_session_path, method: :delete   
+              - else
+                = link_to "Sign In", new_user_session_path
+      - if flash[:notice] || flash[:alert] || flash[:error]
+        %h3= flash[:notice] || flash[:alert]  || flash[:error]
+      = yield
+
+

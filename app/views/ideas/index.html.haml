@@ -1,0 +1,14 @@
+- @ideas.each do |idea|
+  .col-md-offset-1.col-md-10
+    .well
+      .jumbotron
+        %h2= link_to idea.title, idea
+        / the last 'idea' is shorthand for 'idea_path(idea)'
+        %p= idea.body
+        %p
+          Created on: #{formatted_date(idea.created_at)}
+        %p
+          / Tags: #{idea.tag_list.map { |t| link_to t, tag_path(t) }.join(', ')}
+          Tags: #{ raw idea.tags.map { |t| link_to t, tag_path(t) }.join(', ')}
+        %br/
+
