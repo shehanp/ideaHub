@@ -1,9 +1,9 @@
 %h1= @idea.title
 %p= @idea.body
 %p= @idea.created_at.strftime("%Y-%b-%d")
-%p
-  Vote count: #{@idea.vote_count}
-%br
+/ %p
+/   Vote count: #{@idea.vote_count}
+/ %br
 - if @idea.discussions.any?
   Discussions (#{@idea.discussions.count}):
   = @idea.discussions.map(&:title).join(", ")

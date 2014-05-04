@@ -1,4 +1,13 @@
 IdeaHub::Application.routes.draw do
+ 
+
+  # match 'auth/:provider/callback', to: 'sessions#create'
+  # match 'auth/failure', to: redirect('/')
+  # match 'signout', to: 'sessions#destroy', as: 'signout'
+  
+
+  root "ideas#index"
+
   devise_for :users
 
   get 'tags/:tag', to: 'ideas#index', as: :tag
@@ -24,7 +33,9 @@ IdeaHub::Application.routes.draw do
 
 
 
-  root "ideas#index"
+
+
+
 
   
   # The priority is based upon order of creation: first created -> highest priority.

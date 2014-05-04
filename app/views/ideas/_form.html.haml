@@ -1,7 +1,7 @@
 .container
   .jumbotron
     %h1 Give me a idea
-    = form_for @idea do |f|
+    = simple_form_for @idea do |f|
       .form_group
         / = f.input :title
         = f.label :title, "idea entry form"
@@ -12,19 +12,7 @@
       .form_group
         = f.label :tag_list, "Tags (separated by commas)"
         = f.text_area :tag_list, class: "form-control"
-        = raw @idea.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ')
+        = raw idea.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ')
+        = f.file_field :image 
       .form_group
         = f.submit (@idea.persisted? ? "Update" : "Save"), class: "btn btn-primary"
-        
-%div
-  - if @idea.errors.any?
-    %ul
-      - @idea.errors.full_messages.each do |message|
-        %li= message
-
-    %h1 test form
-    = simple_form_for @idea, html: {class: "form-horizontal"} do |f|
-      = f.input :title, label: "idea title"
-      = f.input :body, label: "idea body"
-
-

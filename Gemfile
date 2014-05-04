@@ -12,9 +12,14 @@ gem 'bootstrap-sass', '~> 3.1.1'
 gem 'font-awesome-sass'
 
 gem 'haml-rails'
-
+gem 'carrierwave'
 gem 'devise'
 gem 'tire'
+
+
+gem 'omniauth-facebook'
+
+
 
 gem 'elasticsearch-model', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'
 gem 'elasticsearch-rails', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'

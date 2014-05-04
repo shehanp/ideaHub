@@ -55,7 +55,7 @@ before_action :find_idea, except: [:index, :create, :new]
   private
 
   def idea_attributes
-    params.require(:idea).permit([:title, :body, :tag_list])
+    params.require(:idea).permit([:title, :body, :tag_list, :image])
   end
 
   def find_idea
