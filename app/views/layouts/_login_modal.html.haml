@@ -1,0 +1,14 @@
+#signin-modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+  = simple_form_for "", url: login_path, html: {class: "form-horizontal"} do |f|
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+          %h4#myModalLabel.modal-title Sign In
+        .modal-body
+          = f.input :email
+          = f.input :password
+          = f.submit "login", class: "btn btn-default"
+        .modal-footer
+          Don't have an account?
+          = link_to "Sign up", signup_path, class: "btn btn-default"

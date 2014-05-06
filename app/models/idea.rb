@@ -14,25 +14,30 @@ class Idea < ActiveRecord::Base
 
   ###########################
   ###########################
+
   include Tire::Model::Search
   include Tire::Model::Callbacks
+
+  #rake environment tire:import CLASS=Article FORCE=true
+
   mapping do
-  indexes :id, type: :integer
-  indexes :title, type: :string
-  indexes :body, type: :text
-  indexes :user, type: :string
-  indexes :tag, type: :string
+    indexes :id, type: :integer
+    indexes :title, type: :string
+    indexes :body, type: :string, :analyzer => 'snowball'
+    indexes :user, type: :string
+    indexes :tags do
+      indexes :name, analyzer: 'snowball'
+    end
   end
-  
 
   def to_indexed_json
-    # to_json( include: [:title, :body] )#######CHECK This.
-    to_json :except => ['updated_at', 'created_at']
+    to_json :except => ['updated_at'], methods: :tags
   end
 
   def self.search(params)
-    tire.search(load: true) do
-      query { string params[:query] } if params[:query].present?
+    tire.search(page: params[:page], per_page: 2) do
+      query { string "#{params[:query]}", default_operator: "AND", analyze_wildcard: false} if params[:query].present?
+      sort { by :created_at, "desc" } if params[:query].blank?
     end   
   end
   ###########################

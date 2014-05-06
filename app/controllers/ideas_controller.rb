@@ -1,5 +1,5 @@
 class IdeasController < ApplicationController
-before_action :authenticate_user!, except: [:index]
+before_filter :authorize, only: [:edit, :update]
 before_action :find_idea, except: [:index, :create, :new]
 
   def index

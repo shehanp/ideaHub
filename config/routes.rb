@@ -1,17 +1,19 @@
 IdeaHub::Application.routes.draw do
  
 
-  # match 'auth/:provider/callback', to: 'sessions#create'
-  # match 'auth/failure', to: redirect('/')
-  # match 'signout', to: 'sessions#destroy', as: 'signout'
-  
+  get 'password_resets/new'
+
+  get 'signup', to: 'users#new', as: 'signup'
+  get 'login', to: 'sessions#new', as: 'login'
+  get 'logout', to: 'sessions#destroy', as: 'logout'
 
   root "ideas#index"
 
-  devise_for :users
-
   get 'tags/:tag', to: 'ideas#index', as: :tag
 
+  resources :sessions
+  resources :password_resets
+  
   resources :users do
     resources :votes
     resources :favourites

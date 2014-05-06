@@ -1,7 +1,7 @@
 module ApplicationHelper
 
 def formatted_date(date)
-    date.strftime("%Y-%B-%d")   
+    date.to_time.strftime("%Y-%B-%d")   
 end
 
 end

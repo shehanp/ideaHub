@@ -13,8 +13,14 @@ gem 'font-awesome-sass'
 
 gem 'haml-rails'
 gem 'carrierwave'
-gem 'devise'
+
+
+##gem 'bcrypt'#, '~> 3.0.0'
+gem 'bcrypt-ruby', '3.1.2'
+
+
 gem 'tire'
+gem 'will_paginate'
 
 
 gem 'omniauth-facebook'
@@ -26,7 +32,6 @@ gem 'elasticsearch-rails', git: 'git://github.com/elasticsearch/elasticsearch-ra
 
 gem "paperclip"
 
-gem 'carrierwave'
 gem 'rmagick', require: "RMagick"
 gem 'fog'
 
