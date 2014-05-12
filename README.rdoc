@@ -10,6 +10,3 @@ improved, they can fork the idea and modify it.
 Once an idea is created or forked, the creator can set the max amount of users allowed for collaboration. The founded idea/project
 can be private or public. 
 
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
