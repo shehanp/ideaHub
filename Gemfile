@@ -15,6 +15,8 @@ gem 'haml-rails'
 gem 'carrierwave'
 
 
+gem 'tinymce-rails'
+
 ##gem 'bcrypt'#, '~> 3.0.0'
 gem 'bcrypt-ruby', '3.1.2'
 
@@ -24,8 +26,6 @@ gem 'will_paginate'
 
 
 gem 'omniauth-facebook'
-
-
 
 gem 'elasticsearch-model', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'
 gem 'elasticsearch-rails', git: 'git://github.com/elasticsearch/elasticsearch-rails.git'
@@ -56,6 +56,8 @@ group :development do
     gem 'better_errors'
     gem 'binding_of_caller'
 end
+
+
 gem 'pg'
 gem 'jquery-ui-rails'
 gem 'simple_form', git: "https://github.com/plataformatec/simple_form"
@@ -68,7 +70,6 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 
 group :doc do
-
   gem 'sdoc', require: false
 end
 
