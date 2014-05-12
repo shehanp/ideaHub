@@ -251,6 +251,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.3)
     tilt (1.4.1)
+    tinymce-rails (4.0.19)
+      railties (>= 3.1.1)
     tire (0.6.2)
       activemodel (>= 3.0)
       activesupport
@@ -307,6 +309,7 @@ DEPENDENCIES
   simple_form!
   sqlite3
   thin
+  tinymce-rails
   tire
   turbolinks
   uglifier (>= 1.3.0)

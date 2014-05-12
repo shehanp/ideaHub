@@ -12,6 +12,10 @@ class Idea < ActiveRecord::Base
 
   scope :ordered_by_creation, -> { order("created_at ASC")}
 
+  ############ CARRIERWAVE ############
+  mount_uploader :image, ImageUploader
+  ############ CARRIERWAVE ############  
+
   ###########################
   ###########################
 

@@ -1,6 +1,6 @@
 .container
   .jumbotron
-    %h1 Give me a idea
+    %h1 Give me an idea
     = simple_form_for @idea do |f|
       .form_group
         / = f.input :title
@@ -8,11 +8,13 @@
         = f.text_field :title, class: "form-control"
       .form_group
         = f.label :body, "What's your idea? Be Detailed!"
-        = f.text_area :body, class: "form-control"
+        = f.text_area :body, class: "tinymce", :rows => 20, :cols => 20
+
       .form_group
         = f.label :tag_list, "Tags (separated by commas)"
         = f.text_area :tag_list, class: "form-control"
-        = raw idea.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ')
+        = raw @idea.tags.map(&:name).map { |t| link_to t, tag_path(t) }.join(', ')
         = f.file_field :image 
       .form_group
         = f.submit (@idea.persisted? ? "Update" : "Save"), class: "btn btn-primary"
+= tinymce
