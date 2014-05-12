@@ -1,27 +1,14 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Got an idea?
+Do you want to make it in to a project?
+Do you want others to join in and collaborate?
 
-Things you may want to cover:
+ideaHub is a collaboration tool which allows users to create ideas and collaborate. If users find that an idea can be 
+improved, they can fork the idea and modify it. 
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Once an idea is created or forked, the creator can set the max amount of users allowed for collaboration. The founded idea/project
+can be private or public. 
 
 
 Please feel free to use a different markup language if you do not plan to run
