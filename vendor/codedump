@@ -1,4 +1,4 @@
-Access Key ID:
-AKIAJDCHXD3GIL6FZU6Q
-Secret Access Key:
-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
+    /.discussions= render @discussions
+    / - @discussions.each do |discussion|
+    /   = render "/discussions/discussion", discussion: discussion
+    / the third line above is a shortcut for the next two lines. Note, the partial must be named in the singular of the variable passed.

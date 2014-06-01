@@ -2,7 +2,7 @@
   %head
     %title Ideas
     = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
-    = javascript_include_tag "application", "data-turbolinks-track", "answerkiller" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
   %body
     .navbar.navbar-default.navbar
@@ -10,57 +10,36 @@
       .navbar-header
         %a.navbar-brand{href: "../"} 
           .fa.fa-lightbulb-o.fa-lg  
-            œ∑πå¬ß˚´µ∂
+            •ideaHub•
         %button.navbar-toggle{"data-target" => "#navbar-main", "data-toggle" => "collapse", type: "button"}
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
       #navbar-main.navbar-collapse.collapse
         %ul.nav.navbar-nav
-          %li.dropdown
-            %a#themes.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-              Ideas
-              %span.caret
-            %ul.dropdown-menu{"aria-labelledby" => "themes"}
+          %li= link_to "New Idea", new_idea_path
           %li
             = form_tag ideas_path, method: :get do
               %p
               = text_field_tag :query, params[:query]
               %a
-                %i.fa.fa-search
-          %li
-            %a{href: "http://news.bootswatch.com"} Blog
-          %li.dropdown
-            %a#download.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-              Something Goes Here
-              %span.caret
-            %ul.dropdown-menu{"aria-labelledby" => "download"}
-              %li
-                %a{href: "./bootstrap.min.css"} bootstrap.min.css
-              %li
-                %a{href: "./bootstrap.css"} bootstrap.css
-              %li.divider
-              %li
-                %a{href: "./variables.less"} variables.less
-              %li
-                %a{href: "./bootswatch.less"} bootswatch.less
-        
-            
+                %i.fa.fa-search  
         %ul.nav.navbar-nav.navbar-right
           - if current_user
             %li
-              Logged in as #{current_user.email}.
+              .navbar-text
+                Logged in as #{current_user.email}
+            %li
               = link_to "Log Out", session_path("current"), method: "delete"
           - else
             %li
               = link_to "Sign Up", new_user_path
             %li
-              = render "/layouts/login_modal"
               = link_to "Log In", new_session_path
     - if flash[:notice] || flash[:alert] || flash[:error]
       %h3= flash[:notice] || flash[:alert]  || flash[:error]
 .container
   = yield
-
+ 
 
 

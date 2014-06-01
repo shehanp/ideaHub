@@ -1,45 +1,47 @@
 IdeaHub::Application.routes.draw do
  
 
+  resources :memberships
+
+  get 'sessions/new'
+
   get 'password_resets/new'
 
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
 
-  root "ideas#index"
-
   get 'tags/:tag', to: 'ideas#index', as: :tag
 
   resources :sessions
   resources :password_resets
-  
   resources :users do
-    resources :votes
     resources :favourites
   end
-
-  resources :ideas do
+  resources :profiles, only: [:update, :edit, :show]
+    resources :ideas do
+      member do
+        put "like", to: "ideas#upvote"
+        put "dislike", to: "ideas#downvote"
+      end
     resources :discussions
-    resources :votes
+    
   end
 
-  resources :discussions, only:[] do
+  resources :ideas, only: [] do
+    resources :forked_ideas, only:[:create]
+    resources :memberships, only: [:create, :index]
+  end
+
+  resources :discussions, only: [] do
     resources :comments, only:[:create, :destroy]
-    resources :votes
   end
 
   resources :comments do
-    resources :votes
   end
 
+  root "ideas#index"
 
-
-
-
-
-
-  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

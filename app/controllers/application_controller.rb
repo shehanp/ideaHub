@@ -8,9 +8,16 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
   def current_user
-    @current_user ||= User.find_by_auth_token( cookies[:auth_token]) if cookies[:auth_token]
+    if cookies.permanent[:auth_token] || cookies[:auth_token]
+      @current_user ||= User.find_by_auth_token(cookies.permanent[:auth_token] || cookies[:auth_token]) 
+    end
   end
   helper_method :current_user
+
+  def authenticate_user!
+    redirect_to root_path, alert: "You need to sign in" if current_user.nil?
+  end
 end
 

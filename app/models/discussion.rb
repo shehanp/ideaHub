@@ -1,7 +1,12 @@
 class Discussion < ActiveRecord::Base
   belongs_to :user
   has_many :comments
-  has_many :votes, as: :votable
+  acts_as_votable
+
+  accepts_nested_attributes_for :comments, allow_destroy: true,
+    reject_if: [:body].blank?
+
+  scope :ordered_by_creation, -> { order("created_at DESC")}
 
   include Tire::Model::Search
   include Tire::Model::Callbacks

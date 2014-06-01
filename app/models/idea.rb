@@ -1,16 +1,15 @@
 class Idea < ActiveRecord::Base
   acts_as_taggable
-
+  acts_as_votable
   
   belongs_to :user
 
   has_many :discussions, dependent: :destroy
   has_many :comments, through: :discussions
-  has_many :favourites
-  has_many :favourited_users, through: :favourites, source: :user
-  has_many :votes, as: :votable
+  
 
-  scope :ordered_by_creation, -> { order("created_at ASC")}
+
+  scope :ordered_by_creation, -> { order("created_at DESC")}
 
   ############ CARRIERWAVE ############
   mount_uploader :image, ImageUploader
@@ -48,5 +47,9 @@ class Idea < ActiveRecord::Base
   ###########################
   
 
+  def self.highest_voted
+    self.order("cached_votes_score DESC")
+  end
+ 
 
 end

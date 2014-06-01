@@ -1,51 +1,49 @@
 %h1= @idea.title
 .container
   .well
+    - if @idea.forked_from_idea.present? 
+      Forked From the Original Idea:
+      = link_to "#{@idea.forked_from_idea.title}", @idea.forked_from_idea
+      Created by: 
+      = link_to "#{@idea.forked_from_idea.user.full_name}", @idea.forked_from_idea
     %p= raw @idea.body
     %p= @idea.created_at.strftime("%Y-%b-%d")
-    / %p
-    /   Vote count: #{@idea.vote_count}
-    / %br
-    - if @idea.discussions.any?
-      Discussions (#{@idea.discussions.count}):
-      = @idea.discussions.map(&:title).join(", ")
-    %br
-    / - if @vote.persisted? && @vote.is_up?
-    /   = button_to "Undo", [@idea, @vote], method: :delete, class: "btn btn-primary"
-    / - else
-    /   = form_for [@idea, @vote] do |f|
-    /     = f.hidden_field :is_up, value: true
-    /     = f.submit "Vote Up", class: "btn btn-primary"
-    / %br
-    / - if @vote.persisted? && !@vote.is_up?
-    /   = button_to "Undo", [@idea, @vote], method: :delete, class: "btn btn-primary"
-    / - else
-    /   = form_for [@idea, @vote] do |f|
-    /     = f.hidden_field :is_up, value: false
-    /     = f.submit "Vote Down", class: "btn btn-primary"
-    / %br
-    / -if can? :edit, @idea
-    /   = link_to "Edit", edit_idea_path(@idea)
-    / -if can? :destroy, @idea
-    /   = button_to "Delete", @idea, method: :delete, data: {confirm: "Are you sure you want to delete the idea?"}
-    / %br
-    = link_to "Edit", edit_idea_path(@idea), class: "btn btn-warning"
-    %br
-    = button_to "Delete", @idea, method: :delete, class: "btn btn-danger", data: {confirm: "Are you sure you want to delete this idea?"}
-    %br
+    %p
+      Vote count: #{@idea.votes_for.try(:size)}
+    %p  
+      Created by: #{@idea.user.full_name}
+    .well.well-md
+      .row
+        .col-md-1
+          = link_to "<i class='fa fa-thumbs-o-up fa-5x'></i>".html_safe, like_idea_path(@idea), method: :put
+        .col-md-9
+          = link_to "<i class='fa fa-thumbs-o-down fa-5x'></i>".html_safe, dislike_idea_path(@idea), method: :put 
+        .col-md-2
+          .pull-right        
+            = link_to "<i class='fa fa-code-fork fa-5x'></i>".html_safe, idea_forked_ideas_path(@idea), method: :post
+      .clearfix
+
+      .well.well-sm
+        .title
+          = link_to "Join", idea_memberships_path(@idea), method: :post, remote: true, class: "btn btn-default btn-lg btn-block" 
+          #members  
+            Members:
+            #{@idea.members.map(&:full_name).join(", ")}  
+    .clearfix
+      .col-md-1
+        = link_to "Edit", edit_idea_path(@idea), class: "btn btn-warning"
+      .col-md-1
+        = button_to "Delete", @idea, method: :delete, class: "btn btn-danger", data: {confirm: "Are you sure you want to delete this idea?"}
     %h2 Add Discussion
     - if @discussion.errors.any?
       %ul
         - @discussion.errors.full_messages.each do |message|
           %li= message
-    / = form_for [@idea, @discussion] do |f| is the same as the next line
     = form_for [@idea, @discussion] do |f|
-      = f.text_area :body
+      = f.text_area :body, class: "tinymce", :rows => 4, :cols => 20
       %br
       = f.submit "Submit an discussion", class: "btn btn-success"
     %hr
-
-    /.discussions= render @discussions
-    / - @discussions.each do |discussion|
-    /   = render "/discussions/discussion", discussion: discussion
-    / the third line above is a shortcut for the next two lines. Note, the partial must be named in the singular of the variable passed.
+    - @discussions.each do |discussion|
+      = render "/discussions/discussion", discussion: discussion
+  = tinymce

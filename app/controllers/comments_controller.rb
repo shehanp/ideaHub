@@ -1,8 +1,9 @@
 class CommentsController < ApplicationController
-# before_action :authenticate_user!
+ before_action :authenticate!
 
   def create
     @discussion = Discussion.find(params[:discussion_id])
+    @comment = @discussion.comments.new
     @comment = Comment.create(params.require(:comment).permit(:body))
     if comment.save
       redirect_to discussion.question

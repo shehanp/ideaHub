@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140511230323) do
+ActiveRecord::Schema.define(version: 20140516221546) do
 
   create_table "comments", force: true do |t|
     t.text     "body"
@@ -19,12 +19,12 @@ ActiveRecord::Schema.define(version: 20140511230323) do
     t.datetime "updated_at"
     t.integer  "discussion_id"
     t.integer  "user_id"
-    t.integer  "vote_id"
+    t.integer  "idea_id"
   end
 
   add_index "comments", ["discussion_id"], name: "index_comments_on_discussion_id"
+  add_index "comments", ["idea_id"], name: "index_comments_on_idea_id"
   add_index "comments", ["user_id"], name: "index_comments_on_user_id"
-  add_index "comments", ["vote_id"], name: "index_comments_on_vote_id"
 
   create_table "discussions", force: true do |t|
     t.text     "body"
@@ -33,29 +33,70 @@ ActiveRecord::Schema.define(version: 20140511230323) do
     t.string   "title"
     t.integer  "user_id"
     t.integer  "idea_id"
-    t.integer  "vote_id"
   end
 
   add_index "discussions", ["idea_id"], name: "index_discussions_on_idea_id"
   add_index "discussions", ["user_id"], name: "index_discussions_on_user_id"
-  add_index "discussions", ["vote_id"], name: "index_discussions_on_vote_id"
 
   create_table "favourites", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  create_table "forked_ideas", force: true do |t|
+    t.string   "title"
+    t.text     "body"
+    t.integer  "fork_id"
+    t.string   "image"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "idea_id"
+  end
+
   create_table "ideas", force: true do |t|
     t.string   "title"
     t.text     "body"
-    t.boolean  "fork",       default: false
+    t.boolean  "fork",                  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "vote_id"
     t.string   "image"
+    t.integer  "cached_votes_total",    default: 0
+    t.integer  "cached_votes_score",    default: 0
+    t.integer  "cached_votes_up",       default: 0
+    t.integer  "cached_votes_down",     default: 0
+    t.integer  "cached_weighted_score", default: 0
+    t.integer  "forked_from_idea_id"
+    t.integer  "user_id"
   end
 
-  add_index "ideas", ["vote_id"], name: "index_ideas_on_vote_id"
+  add_index "ideas", ["cached_votes_down"], name: "index_ideas_on_cached_votes_down"
+  add_index "ideas", ["cached_votes_score"], name: "index_ideas_on_cached_votes_score"
+  add_index "ideas", ["cached_votes_total"], name: "index_ideas_on_cached_votes_total"
+  add_index "ideas", ["cached_votes_up"], name: "index_ideas_on_cached_votes_up"
+  add_index "ideas", ["cached_weighted_score"], name: "index_ideas_on_cached_weighted_score"
+  add_index "ideas", ["user_id"], name: "index_ideas_on_user_id"
+
+  create_table "memberships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "idea_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "memberships", ["idea_id"], name: "index_memberships_on_idea_id"
+  add_index "memberships", ["user_id"], name: "index_memberships_on_user_id"
+
+  create_table "profiles", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "linkedin"
+    t.string   "twitter"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
@@ -101,11 +142,18 @@ ActiveRecord::Schema.define(version: 20140511230323) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true
 
   create_table "votes", force: true do |t|
-    t.integer  "value"
     t.integer  "votable_id"
     t.string   "votable_type"
+    t.integer  "voter_id"
+    t.string   "voter_type"
+    t.boolean  "vote_flag"
+    t.string   "vote_scope"
+    t.integer  "vote_weight"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "votes", ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope"
+  add_index "votes", ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope"
 
 end

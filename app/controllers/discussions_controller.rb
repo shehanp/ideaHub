@@ -4,9 +4,7 @@ class DiscussionsController < ApplicationController
 
   def create
     @discussion = @idea.discussions.new(discussion_attributes)
-    @discussion.user = current_user
-
-    
+    @discussion.user = current_user    
     if @discussion.save
       redirect_to @idea, notice: "discussion created successfully"
     else
@@ -27,7 +25,7 @@ class DiscussionsController < ApplicationController
   private
 
   def discussion_attributes
-    params.require(:discussion).permit([:body])   
+    params.require(:discussion).permit(:body, {comment_attributes: [:body]})   
   end
 
   def find_idea

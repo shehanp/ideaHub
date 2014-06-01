@@ -1,24 +1,30 @@
 class User < ActiveRecord::Base
 
   has_secure_password
+  acts_as_voter
+
+  has_one :profile
+  accepts_nested_attributes_for :profile
+  delegate :full_name, to: :profile
+
+  has_many :memberships, dependent: :destroy
+    #user.memberships
+  has_many :member_projects, through: :memberships, source: :project
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  VALID_URL_REGEX   = /^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/ix
 
 
-  validates :email,      :uniqueness => true, :presence => true, :format => { with: VALID_EMAIL_REGEX }
-  validates :first_name, :presence => true, length: {minimum: 1}
-  validates :last_name,  :presence => true, length: {minimum: 1}  
-  validates :twitter,    :format => { with: VALID_URL_REGEX, :multiline => true}
-  validates :linkedin,   :format => { with: VALID_URL_REGEX, :multiline => true}
+  validates :email, :format => { with: VALID_EMAIL_REGEX }, :uniqueness => true, :presence => true 
+
+
   has_many :comments
-  has_many :vote, as: :votable
 
 
   ############ CARRIERWAVE ############
   mount_uploader :image, ImageUploader
   ############ CARRIERWAVE ############  
-
+ 
+  before_create { generate_token(:auth_token) }
 
   def generate_token(column)
     begin
@@ -41,6 +47,7 @@ class User < ActiveRecord::Base
     UserMailer.password_reset(self).deliver
   end
 
+#, :format => { with: VALID_EMAIL_REGEX }
 
 end
 
