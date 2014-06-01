@@ -5,14 +5,18 @@ gem 'rails', '4.1.0'
 
 # Use thin as the app server
 gem 'thin'
+gem 'pry'
 
 gem 'quiet_assets'
+
+gem 'masonry-rails'
 
 gem 'bootstrap-sass', '~> 3.1.1'
 gem 'font-awesome-sass'
 
 gem 'haml-rails'
 gem 'carrierwave'
+
 
 
 gem 'tinymce-rails'
@@ -36,7 +40,7 @@ gem 'rmagick', require: "RMagick"
 gem 'fog'
 
 gem 'acts-as-taggable-on'
-
+gem 'acts_as_votable', '~> 0.9.0'
 
 gem 'sqlite3'
 

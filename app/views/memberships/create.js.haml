@@ -1,0 +1,3 @@
+$('#members').append("#{j render '/users/user', user: @membership.user}");
+$("##{dom_id(@membership.user)}").hide().fadeIn(500);
+$('#member_count #count').html("(#{@mem_count})")

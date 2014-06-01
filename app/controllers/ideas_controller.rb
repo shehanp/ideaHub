@@ -8,7 +8,7 @@ before_action :find_idea, except: [:index, :create, :new]
     elsif params[:query].present?
       @ideas = Idea.search(params)
     else
-      @ideas = Idea.all
+      @ideas = Idea.all.highest_voted
     end
   end
 
@@ -18,6 +18,7 @@ before_action :find_idea, except: [:index, :create, :new]
 
   def create
     @idea = Idea.new(idea_attributes)
+    @idea.user = current_user
       if @idea.save
         redirect_to ideas_path, notice: "Idea has been created!"
       else
@@ -30,7 +31,7 @@ before_action :find_idea, except: [:index, :create, :new]
 
   def update
       if @idea.update_attributes(idea_attributes)
-        redirect_to products_path, notice: "Idea has been updated"
+        redirect_to ideas_path, notice: "Idea has been updated"
       else
         render :edit
       end
@@ -39,9 +40,10 @@ before_action :find_idea, except: [:index, :create, :new]
   def show
     @idea = Idea.find(params[:id])
     @discussion = Discussion.new
+    @discussions  = @idea.discussions.ordered_by_creation
+    @discussions_count = @idea.discussions.count
+    # @comments     = @discussions.comments.ordered_by_creation
     # @favourite = current_user.favourite_for(@idea)
-    # @vote = current_user.vote_for(@idea) || Vote.new
-    # @discussion = @idea.discussion.ordered_by_creation
   end
 
   def destroy
@@ -51,6 +53,24 @@ before_action :find_idea, except: [:index, :create, :new]
       redirect_to ideas_path, notice: "idea has been deleted"
     end
   end
+
+  def upvote
+    @idea = Idea.find(params[:id])
+    @idea.liked_by current_user
+    redirect_to @idea
+  end
+
+  def downvote
+    @idea = Idea.find(params[:id])
+    @idea.downvote_from current_user
+    redirect_to @idea
+  end
+
+  # def fork
+  #   @idea = Idea.find(params[:id])
+  #   @forked_idea = Idea.new(title: @idea.title, body: @idea.body, tag_list: @idea.tag_list, image: @idea.image)
+  #   @forked_idea.save
+  # end
 
   private
 

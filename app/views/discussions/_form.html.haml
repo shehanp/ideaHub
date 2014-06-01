@@ -1,0 +1,9 @@
+%h2 Add A Discussion
+- if @discussion.errors.any?
+  %ul
+    - @discussion.errors.full_messages.each do |message|
+      %li= message
+= form_for [@idea, @discussion], remote: true do |f|
+  = f.text_area :body
+  %br
+  = f.submit "Submit a discussion", class: "btn btn-primary", data: {disable_with: "Saving..."}
